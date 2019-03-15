@@ -70,30 +70,49 @@ let getPreEquelNum = (s, index) => {
 * @return {boolean}
 */
 var isMatch = function (s, p) {
-    let sleft = 0
-    let sright = s.length - 1
-    let pleft = 0
-    let pright = p.length - 1
-    let result = true
-    let ecexRight = true
-    while (sleft === sright && pleft === pright) {
-        if (p[pright] === '*') {
-            //取上一个
-            let pre = p[pright - 1]
-            if (pre === '.') {
+   if(p===""){
+       return s===""
+   } 
 
-            } else {
-                let preEquelNum = getPreEquelNum(p, pright - 1)
-                if (s[sright] !== s)
-            }
-
-        } else {
-            if (s[sright] !== p[pright]) {
-                result = false
-                break
-            }
-        }
-        sright--
-        pright--
-    }
+   //查看第一个是否匹配得上
+   let flag=s!==""&&( p[0]===s[0]||p[0]==='.')
+   //当后面的为*时，可能有0  无数
+   if(p.length>=2&&p[1]==='*'){
+        return isMatch(s,p.substring(2))||(flag&&isMatch(s.substring(1),p))
+   }else{
+       return flag&&isMatch(s.substring(1),p.substring(1))
+   }
 };
+
+
+
+/**
+* @param {string} s
+* @param {string} p
+* @return {boolean}
+*/
+var isMatch2 = function (s, p) {
+    let dp=Array.from({ length: s.length+2 }, () => Array.from({length:p.length+2},()=>false))
+    dp[0][0]=true
+    dp[1][1]=(s[0]===p[0])||(p[0]==='.')
+    //a*时 空字符串也可以匹配
+    for(let j=2;j<p.length+1;j++){
+        dp[0][j]=dp[0][j-2]&&p[j-1]==='*'
+    }
+    for(let i=1;i<s.length+1;i++){
+        for(let j=2;j<p.length+1;j++){
+           if(p[j-1]==='*'){
+                dp[i][j]=(dp[i][j-2])||(dp[i-1][j]&&(s[i-1]===p[j-2]||p[j-2]==='.'))
+           }else{
+               dp[i][j]=dp[i-1][j-1]&&(s[i-1]===p[j-1]||p[j-1]==='.')
+           }
+        }
+    }
+    console.log(JSON.stringify(dp))
+    return dp[s.length][p.length]
+}
+
+
+
+console.log(isMatch2("aaa",
+"ab*a*c*a"))
