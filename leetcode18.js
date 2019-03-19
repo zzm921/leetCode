@@ -27,29 +27,49 @@ var fourSum = function (nums, target) {
     nums = nums.sort((val1, val2) => {
         return val1 - val2
     })
-
-    //求出两两之和
-    let twoNumSums = []
-    for (let i = 0; i < nums.length; i++) {
-        let right = nums.length - 1
-        let arr = new Array(i + 1).fill(0)
-        while (i < right) {
-            arr[right] = nums[i] + nums[right]
-            right--
+    let result = []
+    if (nums.length < 4) return []
+    for (let j = 0; j < nums.length; j++) {
+        if (j > 0 && nums[j] === nums[j - 1]) {
+            continue
         }
-        twoNumSums.push(arr)
-    }
-    for (let i = 0; i < twoNumSums.length; i++) {
-        for (let j = i; j < twoNumSums.length; j++) {
-            let left = i, right = twoNumSums.length - 1
-            while (left < right) {
-                if (twoNumSums[left])
-                    right--
+        for (let i = j + 1; i < nums.length; i++) {
+            let towSum = target - nums[i] - nums[j]
+            let left = i + 1
+            let right = nums.length - 1
+            if (i - j > 1 && nums[i] === nums[i - 1]) {
+                continue
             }
-            twoNumSums.push(arr)
+            while (left < right) {
+                if (left === i) {
+                    left++
+                } else if (right === i) {
+                    right--
+                } else {
+                    let realsum = nums[left] + nums[right]
+                    if (realsum === towSum) {
+                        result.push([nums[j], nums[i], nums[left], nums[right]])
+                        left++
+                        right--
+                        while (left !== right && (nums[left - 1] === nums[left] || nums[right] === nums[right + 1])) {
+                            if (nums[left - 1] === nums[left]) {
+                                left++
+                            }
+                            if (nums[right] === nums[right + 1]) {
+                                right--
+                            }
+                        }
+                    } else if (realsum > towSum) {
+                        right--
+                    } else {
+                        left++
+                    }
+                }
+            }
         }
     }
-
+    return result
 };
 
-fourSum([1, 0, -1, 0, -2, 2])
+console.log(fourSum([-1, -5, -5, -3, 2, 5, 0, 4],
+    - 7))

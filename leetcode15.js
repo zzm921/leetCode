@@ -18,12 +18,18 @@
 */
 var threeSum = function (nums) {
     let result = []
-    nums = nums.sort()
-    for (let i = 0; i < nums.length; i++) {
+    if (nums.length < 3) return []
+    nums = nums.sort((val1, val2) => {
+        return val1 - val2
+    })
+    for (let i = 0; i < nums.length - 2; i++) {
         let towSum = 0 - nums[i]
-        let left = 0
+        if (nums[i] === nums[i - 1]) {
+            continue
+        }
+        let left = i
         let right = nums.length - 1
-        while (left !== right) {
+        while (left < right) {
             if (left === i) {
                 left++
             } else if (right === i) {
@@ -34,7 +40,7 @@ var threeSum = function (nums) {
                     result.push([nums[i], nums[left], nums[right]])
                     left++
                     right--
-                    while (left !== right && (nums[left - 1] === nums[left] || nums[right] === nums[right + 1])) {
+                    while (left < right && (nums[left - 1] === nums[left] || nums[right] === nums[right + 1])) {
                         if (nums[left - 1] === nums[left]) {
                             left++
                         }
@@ -50,4 +56,5 @@ var threeSum = function (nums) {
             }
         }
     }
+    return result
 };
