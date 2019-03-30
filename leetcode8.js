@@ -77,7 +77,7 @@ var myAtoi = function (str) {
     }
     if (num === "" || num === "+" || num === "-") return 0
     let result = parseInt(num)
-    result = Math.min(result, Math.pow(2, 31) + 1)
+    result = Math.min(result, Math.pow(2, 31)-1 )
     result = Math.max(result, Math.pow(-2, 31))
 
     return result

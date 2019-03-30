@@ -44,7 +44,7 @@ let dfs = (digits, i, str, list) => {
 var letterCombinations = function (digits) {
     let list = []
     if (digits.length === 0) return list
-    bps(digits, 0, '', list)
+    dfs(digits, 0, '', list)
     return list
 };
 
