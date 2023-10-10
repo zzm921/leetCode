@@ -1,0 +1,7 @@
+{
+    // eslint 起修复作用主要的代码
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+   
+}
