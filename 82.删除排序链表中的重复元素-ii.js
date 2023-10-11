@@ -17,7 +17,7 @@
  * @return {ListNode}
  */
 var deleteDuplicates = function(head) {
-    if(head===null&&head.next===null) return head
+    if(head===null||head.next===null) return head
     let dummp=new ListNode(-1)
     let p =dummp
     let slow=head
@@ -25,21 +25,24 @@ var deleteDuplicates = function(head) {
     //当前对比的值
     let duplicatesFlag=false
     while(fast!==null){
-        console.log(slow.val,fast.val,p.val)
         if(slow.val===fast.val){
             duplicatesFlag=true
             fast=fast.next
         }else{
             if(duplicatesFlag===false){
-                let temp=slow
+                let temp=slow.next
+                slow.next=null
                 p.next=slow
+                slow=temp
                 p=p.next
             }
             slow=fast
             fast=fast.next
             duplicatesFlag=false
         }
-      
+    }
+    if(duplicatesFlag===false){
+        p.next=slow
     }
     return dummp.next
 
