@@ -13,6 +13,7 @@ var subsetsWithDup = function(nums) {
     let result=[]
     let tracks=[]
     //记录所有的数字是否被使用
+    nums=nums.sort((a,b)=>{return a-b})
     let used=new Array(nums.length).fill(false)
     /**
      * index表示子集下标，
@@ -22,7 +23,7 @@ var subsetsWithDup = function(nums) {
          //记录每一层的数字是否被使用，由于有重复数字，则每个backtrack下，一个数字只能用一次.
         let cenUsed=[]
         for(let i=index;i<nums.length;i++){
-            if(used[i]||cenUsed.push(nums[i])) continue
+            if(used[i]||cenUsed.includes(nums[i])) continue
             cenUsed.push(nums[i])
             tracks.push(nums[i])
             used[i]=true
@@ -37,6 +38,5 @@ var subsetsWithDup = function(nums) {
     return result
 
 };
-subsetsWithDup([4,4,4,1,4])
 // @lc code=end
 
